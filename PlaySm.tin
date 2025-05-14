@@ -1,0 +1,41 @@
+// Copyright (c) 2025 Arista Networks, Inc.  All rights reserved.
+// Arista Networks, Inc. Confidential and Proprietary.
+
+#include <Ark/BothFmt.h>
+#include <Tac/Tracing.h>
+
+DEFAULT_TRACE_HANDLE( "PlaySm" );
+
+namespace PlayNs {
+
+void
+MemberSm::handleInitialized( void ) {
+   BTFMT0_FUNC(" name: {} val: {}", name(), member()->val() );
+   initializedIs( true );
+}
+
+void
+MemberSm::handleDel( void ) {
+   BTFMT0_FUNC(" name: {} val: {}", name(), member()->val() );
+}
+
+void
+PlaySm::handleInitialized( void ) {
+   BTFMT0_FUNC("");
+   assert( play() );
+   initializedIs( true );
+}
+
+void
+PlaySm::handleMember( const Tac::String & name ) {
+   BTFMT0_FUNC(" name: {}", name );
+   if( play()->memberHas( name ) ) {
+      BTFMT0_FUNC(" name: {} Calling memberSm xtor", name );
+      memberSmIs( play()->member( name ) );
+   } else {
+      BTFMT0_FUNC(" name: {} Calling memberSm dtor", name );
+      memberSmDel( name );
+   }
+}
+
+}

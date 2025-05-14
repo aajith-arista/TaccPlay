@@ -4,14 +4,16 @@
 
 import Tac
 
-# Setup a byte array for testing
-ary = bytearray( 256 )
-for i in range( 256 ):
-   ary[i] = 255 - i
-
 Tac.dlopen( "libPlay.so" )
-Play = Tac.Type( "Play" )
-play = Play()
-play.pa1 = 10
-assert play.pa1 == 10
 
+# Setup a byte array for testing
+play = Tac.newInstance( 'PlayNs::Play' )
+playSm = Tac.newInstance( 'PlayNs::PlaySm', play )
+
+print("adding m0")
+play.newMember( "m0" )
+print("removing m0" )
+del play.member[ "m0" ]
+
+print( "adding m1" )
+play.newMember( "m1" )
